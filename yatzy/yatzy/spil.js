@@ -77,13 +77,34 @@ function inputClicked(event) {
 }
 
 function updateSum() {
-    let sum = finalScore.slice(0, 6).reduce((a, b) => a + (b || 0), 0);
-    document.querySelector("#sum input").value = sum;
-    
-    let total = finalScore.reduce((a, b) => a + (b || 0), 0);
-    document.querySelector("#total input").value = total;
+    let sum = 0;
+    let total = 0;
+    let bonus = 0;
 
-    let bonus = sum >= 63 ? 50 : 0;
+    
+    for (let i = 0; i < 6; i++) {
+        if (finalScore[i] !== null) {
+            sum += finalScore[i];
+        }
+    }
+
+
+    for (let i = 0; i < finalScore.length; i++) {
+        if (finalScore[i] !== null) {
+            total += finalScore[i];
+        }
+    }
+
+ 
+    if (sum >= 63) {
+        bonus = 50;
+    } else {
+        bonus = 0;
+    }
+
+  
+    document.querySelector("#sum input").value = sum;
+    document.querySelector("#total input").value = total;
     document.querySelector("#bonus input").value = bonus;
 }
 
@@ -154,11 +175,19 @@ function onePair() {
 
 function twoPairs() {
     let pairs = [];
+
     for (let i = freq.length - 1; i >= 0; i--) {
-        if (freq[i] >= 2) pairs.push((i + 1) * 2);
+        if (freq[i] >= 2) {
+            pairs.push((i + 1) * 2);
+        }
     }
-    return pairs.length === 2 ? pairs.reduce((a, b) => a + b, 0) : 0;
+    if (pairs.length === 2) {
+        return pairs[0] + pairs[1];
+    } else {
+        return 0;
+    }
 }
+
 
 function threeOfAKind() {
     for (let i = freq.length - 1; i >= 0; i--) {
@@ -197,7 +226,7 @@ function largeStraight() {
 function fullHouse() {
     let three = false;
     let two = false;
-    
+
     for (let i = 0; i < freq.length; i++) {
         if (freq[i] === 3) {
             three = true;
@@ -206,17 +235,36 @@ function fullHouse() {
         }
     }
 
-    return three && two ? chance(dieValues) : 0;
+    if (three && two) {
+        return chance(dieValues);
+    } else {
+        return 0;
+    }
 }
+
 
 
 function chance(dieValues) {
-    return dieValues.reduce((sum, die) => sum + die, 0);
+function chance(dieValues) {
+    let sum = 0;
+    for (let i = 0; i < dieValues.length; i++) {
+        sum += dieValues[i];
+    }
+
+    return sum;
+}
 }
 
 function yatzy() {
-    return freq.includes(5) ? 50 : 0;
-}
+function yatzy() {
+    for (let i = 0; i < freq.length; i++) {
+        if (freq[i] === 5) {
+            return 50; 
+        }
+    }
+    
+    return 0; 
+}}
 
 function updateRollsLeft() {
     document.getElementById('rolls-left').textContent = `Rolls left: ${maxRollsPerRound - rollsThisRound}`;
