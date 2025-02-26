@@ -25,13 +25,13 @@ function rollDice() {
     updateScoreButtons(getResults(dieValues));
 }
 
-// 🔒 Låsefunktion til terninger
+
 function holdLock(event) {
     const die = event.currentTarget;
     die.classList.toggle('locked');
 }
 
-// ➕ Tilføj event listeners på terningerne
+
 for (let i = 1; i <= 5; i++) {
     document.getElementById(`die${i}`).addEventListener('click', holdLock);
 }
@@ -52,7 +52,7 @@ function updateScoreButtons(score) {
                 button.dataset.index = index;
                 button.disabled = false;
 
-                // 🔥 Før vi tilføjer event listener, fjerner vi gamle for at undgå dubletter
+                
                 button.removeEventListener("click", inputClicked);
                 button.addEventListener("click", inputClicked);
             } else {
